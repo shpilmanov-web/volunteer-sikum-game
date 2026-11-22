@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ג'פרדי קבוצתי - גרסה מותאמת אישית</title>
+  <style>
+    :root {
+      --bg-primary: #060b26;
+      --bg-card: #0c1847;
+      --accent-gold: #ffcc00;
+      --accent-blue: #1e3a8a;
+      --accent-green: #16a34a;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      width: 100%;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* Logo Styles */
+    .app-logo-large {
+      max-height: 104px;
+      max-width: 250px;
+      object-fit: contain;
+      margin-bottom: 1.2rem;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    .app-logo-lobby {
+      max-height: 72px;
+      max-width: 180px;
+      object-fit: contain;
+      margin-bottom: 0.75rem;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    .app-logo-header {
+      max-height: 48px;
+      max-width: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: var(--accent-gold);
+      text-shadow: 0 4px 12px rgba(255, 204, 0, 0.4);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
+      color: var(--text-main);
+      text-align: center;
+    }
+
+    p.subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+      color: #fff;
+      border: 2px solid var(--accent-gold);
+      padding: 0.8rem 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(255, 204, 0, 0.3);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+
+    .btn-secondary {
+      background: #0f172a;
+      border-color: var(--border-color);
+      font-size: 0.95rem;
+      padding: 0.5rem 1.2rem;
+    }
+
+    .btn-danger {
+      background: #450a0a;
+      border-color: var(--accent-red);
+      color: #fecaca;
+      font-size: 0.95rem;
+      padding: 0.5rem 1.2rem;
+    }
+
+    /* Screen 1: Splash */
+    #screen-splash {
+      cursor: pointer;
+    }
+    .pulse-text {
+      animation: pulse 1.8s infinite;
+      font-size: 1.3rem;
+      color: var(--accent-gold);
+      margin-top: 2rem;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* Screen 2: Rules */
+    .rules-card {
+      background-color: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2.5rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    .rules-list {
+      list-style: none;
+      margin-bottom: 2rem;
+      text-align: right;
+    }
+    .rules-list li {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-right: 2rem;
+    }
+    .rules-list li::before {
+      content: "◆";
+      position: absolute;
+      right: 0;
+      color: var(--accent-gold);
+      font-size: 1.1rem;
+    }
+    .example-box {
+      background: rgba(30, 58, 138, 0.5);
+      border-right: 4px solid var(--accent-gold);
+      padding: 0.8rem 1rem;
+      margin-top: 0.5rem;
+      border-radius: 4px;
+      font-size: 1.05rem;
+      color: #e2e8f0;
+    }
+
+    /* Screen 3: Lobby & Custom Builder */
+    .lobby-container {
+      background-color: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 1150px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .lobby-top-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: right;
+    }
+
+    label {
+      font-weight: bold;
+      color: var(--accent-gold);
+      font-size: 1.05rem;
+    }
+
+    select, input[type="text"], textarea {
+      padding: 0.7rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: #081033;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      user-select: text;
+    }
+
+    select:focus, input[type="text"]:focus, textarea:focus {
+      border-color: var(--accent-gold);
+    }
+
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 0.7rem;
+    }
+
+    /* Builder Board Grid inside Lobby */
+    .builder-section {
+      background: rgba(6, 11, 38, 0.65);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+
+    .builder-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .builder-status {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .builder-grid {
+      display: grid;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .builder-cat-input {
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      color: var(--accent-gold) !important;
+      background: linear-gradient(180deg, #1e3a8a, #0f172a) !important;
+      border: 2px solid var(--border-color) !important;
+      padding: 0.75rem 0.4rem !important;
+      font-size: 1rem !important;
+    }
+
+    .builder-slot-btn {
+      background-color: #0f1f5c;
+      border: 2px dashed #3b82f6;
+      color: var(--text-muted);
+      padding: 0.85rem 0.5rem;
+      border-radius: 6px;
+      font-size: 1.15rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+    }
+
+    .builder-slot-btn:hover {
+      border-color: var(--accent-gold);
+      color: #fff;
+      background-color: #1e3a8a;
+    }
+
+    .builder-slot-btn.filled {
+      background-color: rgba(22, 163, 74, 0.22);
+      border: 2px solid var(--accent-green);
+      color: var(--accent-gold);
+    }
+
+    .builder-slot-sub {
+      font-size: 0.78rem;
+      font-weight: normal;
+      color: #cbd5e1;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Screen 4: Game */
+    #screen-game {
+      justify-content: flex-start;
+      padding: 1rem;
+      position: relative;
+    }
+    .game-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0 1rem;
+    }
+    .header-center {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .board-container {
+      width: 100%;
+      max-width: 1400px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .board-row {
+      display: grid;
+      gap: 8px;
+      width: 100%;
+    }
+    .board-header-cell {
+      background: linear-gradient(180deg, #1e3a8a, #0f172a);
+      border: 2px solid var(--border-color);
+      color: var(--accent-gold);
+      padding: 0.8rem 0.5rem;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 80px;
+      word-break: break-word;
+    }
+    .card-cell {
+      background-color: var(--bg-card);
+      border: 2px solid #1e40af;
+      color: var(--accent-gold);
+      font-size: 2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 90px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 0.15s, background-color 0.15s;
+    }
+    .card-cell:hover:not(.disabled) {
+      transform: scale(1.02);
+      background-color: #1e3a8a;
+      border-color: var(--accent-gold);
+    }
+    .card-cell.disabled {
+      background-color: #0b0f19;
+      color: #334155;
+      border-color: #1e293b;
+      cursor: not-allowed;
+    }
+
+    /* Scoreboard */
+    .scoreboard {
+      width: 100%;
+      max-width: 1400px;
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+    .team-card {
+      flex: 1;
+      min-width: 160px;
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .team-name {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #fff;
+      outline: none;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-align: center;
+      cursor: text;
+      user-select: text;
+    }
+    .team-name:focus {
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 2px solid var(--accent-gold);
+    }
+    .team-score {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+    }
+    .score-controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .score-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s;
+    }
+    .score-btn:active {
+      transform: scale(0.9);
+    }
+    .score-btn.plus { background: #16a34a; color: white; }
+    .score-btn.minus { background: #dc2626; color: white; }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      z-index: 100;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: var(--bg-card);
+      border: 3px solid var(--accent-gold);
+      border-radius: 12px;
+      max-width: 900px;
+      width: 100%;
+      padding: 2.5rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+
+    #modal-editor .modal-content {
+      max-width: 620px;
+      align-items: stretch;
+      text-align: right;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      color: #f8fafc;
+      font-size: 1rem;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-gold);
+      cursor: pointer;
+    }
+
+    .daily-double-banner {
+      background: linear-gradient(90deg, #ea580c, #f59e0b);
+      color: white;
+      font-weight: 900;
+      font-size: 2.2rem;
+      padding: 0.6rem 2.5rem;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      display: none;
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.6);
+      animation: bannerPulse 1s infinite alternate;
+    }
+    @keyframes bannerPulse {
+      from { transform: scale(0.98); }
+      to { transform: scale(1.03); }
+    }
+    .timer-display {
+      font-size: 3rem;
+      font-weight: 900;
+      color: #38bdf8;
+      border: 3px solid #38bdf8;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .timer-display.danger {
+      color: var(--accent-red);
+      border-color: var(--accent-red);
+      animation: shake 0.3s infinite;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      75% { transform: translateX(3px); }
+    }
+    .clue-text {
+      font-size: 1.8rem;
+      line-height: 1.5;
+      text-align: center;
+      color: #fff;
+    }
+    .answer-box {
+      display: none;
+      background: rgba(30, 58, 138, 0.6);
+      border: 2px dashed var(--accent-gold);
+      padding: 1.5rem;
+      border-radius: 8px;
+      font-size: 1.6rem;
+      color: var(--accent-gold);
+      text-align: center;
+      width: 100%;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    #modal-rules-floating .modal-content {
+      max-width: 700px;
+      align-items: flex-start;
+      text-align: right;
+    }
+
+    @media (max-width: 768px) {
+      .builder-grid {
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen 1: Splash -->
+  <div id="screen-splash" class="screen active" onclick="showScreen('screen-rules')">
+    <img src="logo.png" alt="לוגו התוכנית" class="app-logo-large" onerror="this.style.display='none';">
+    <h1>ג'פרדי קבוצתי</h1>
+    <p class="subtitle">זירת הטריוויה, ההומור והזיכרונות המשותפים</p>
+    <div class="pulse-text">לחצו בכל מקום או על ENTER/רווח להתחלת המשחק</div>
+  </div>
+
+  <!-- Screen 2: Rules -->
+  <div id="screen-rules" class="screen">
+    <div class="rules-card">
+      <img src="logo.png" alt="לוגו התוכנית" class="app-logo-large" onerror="this.style.display='none';">
+      <h2>כללי המשחק המחייבים</h2>
+      <ul class="rules-list">
+        <li>
+          <strong>זכות דיבור בלעדית:</strong>
+          הקבוצה שבחרה את השאלה מקבלת זכות תשובה ראשונית. במידה ולא ענתה נכון בתוך 10 שניות, הזכות נפתחת ליתר הקבוצות.
+        </li>
+        <li>
+          <strong>חובת ניסוח כשאלה:</strong>
+          התשובה חייבת להינתן אך ורק במבנה תקני של שאלה ("מהו/מהי/מי הוא...?").
+          <div class="example-box">
+            רמז: "המשפט שנאמר רגע לפני שכולנו הלכנו לאיבוד בטיול השנתי: 'אל תדאגו, אני מכיר קיצור דרך'."<br>
+            מענה תקני: <strong>"מי אמר את זה (דני)?"</strong>
+          </div>
+        </li>
+        <li>
+          <strong>שאלת Daily Double:</strong>
+          שאלה שבה הקבוצה יכולה להמר על סכום נקודות מתוך הניקוד שצברה עד כה, טרם חשיפת הרמז.
+        </li>
+      </ul>
+      <div>
+        <button class="btn" onclick="showScreen('screen-lobby')">הבנתי, נעבור לבניית הלוח (ENTER)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 3: Lobby & Question Builder -->
+  <div id="screen-lobby" class="screen">
+    <div class="lobby-container">
+      <div style="text-align: center;">
+        <img src="logo.png" alt="לוגו התוכנית" class="app-logo-lobby" onerror="this.style.display='none';">
+        <h2>הגדרות משחק והזנת שאלות</h2>
+      </div>
+
+      <div class="lobby-top-controls">
+        <div class="form-group">
+          <label for="board-size-select">מבנה לוח:</label>
+          <select id="board-size-select" onchange="handleBoardSizeChange()">
+            <option value="4x4" selected>4 קטגוריות × 4 רמות (100–400)</option>
+            <option value="5x5">5 קטגוריות × 5 רמות (100–500)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="team-count-select">כמות קבוצות (1–6):</label>
+          <select id="team-count-select" onchange="renderTeamInputs()">
+            <option value="1">1 קבוצה</option>
+            <option value="2">2 קבוצות</option>
+            <option value="3" selected>3 קבוצות</option>
+            <option value="4">4 קבוצות</option>
+            <option value="5">5 קבוצות</option>
+            <option value="6">6 קבוצות</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>שמות הקבוצות:</label>
+          <div id="team-inputs-container" class="teams-grid"></div>
+        </div>
+      </div>
+
+      <!-- Interactive Categories & Questions Grid -->
+      <div class="builder-section">
+        <div class="builder-header-bar">
+          <div>
+            <strong style="color: var(--accent-gold); font-size: 1.15rem;">עריכת נושאים ושאלות:</strong>
+            <span class="builder-status" id="builder-progress-text">לחצו על כל משבצת ניקוד להזנת רמז ותשובה</span>
+          </div>
+          <button type="button" class="btn btn-danger" onclick="resetBoardData()">איפוס לברירת מחדל</button>
+        </div>
+        <div id="builder-grid" class="builder-grid"></div>
+      </div>
+
+      <div style="text-align: center; margin-top: 0.5rem;">
+        <button class="btn" onclick="startGame()">עלייה ללוח המשחק</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 4: Game -->
+  <div id="screen-game" class="screen">
+    <div class="game-header">
+      <button class="btn" style="font-size: 0.9rem; padding: 0.5rem 1rem;" onclick="showScreen('screen-lobby')">חזרה לעריכה</button>
+      <div class="header-center">
+        <img src="logo.png" alt="לוגו" class="app-logo-header" onerror="this.style.display='none';">
+        <h2 id="current-topic-title" style="margin: 0; font-size: 1.5rem; color: var(--accent-gold);">ג'פרדי קבוצתי</h2>
+      </div>
+      <button class="btn" style="font-size: 0.9rem; padding: 0.5rem 1rem;" onclick="openRulesModal()">תזכורת כללים</button>
+    </div>
+
+    <div class="board-container" id="board-container"></div>
+    <div class="scoreboard" id="scoreboard"></div>
+  </div>
+
+  <!-- Question Editor Modal (Inside Lobby) -->
+  <div class="modal-overlay" id="modal-editor" onclick="closeEditorModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <h3 id="editor-modal-title" style="color: var(--accent-gold); font-size: 1.5rem; text-align: center;">עריכת שאלה</h3>
+      
+      <div class="form-group">
+        <label for="editor-clue-input">הרמז / השאלה שתוצג על המסך:</label>
+        <textarea id="editor-clue-input" rows="3" placeholder="הזן כאן את התיאור, הציטוט או הרמז..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="editor-answer-input">התשובה הנכונה (מומלץ לנסח כשאלה):</label>
+        <input type="text" id="editor-answer-input" placeholder='לדוגמה: "מי אמר את זה?" או "מהו התירוץ?"'>
+      </div>
+
+      <label class="checkbox-row">
+        <input type="checkbox" id="editor-dd-checkbox">
+        <span>הגדר כרטיסייה זו כ-Daily Double</span>
+      </label>
+
+      <div class="modal-actions" style="margin-top: 0.5rem;">
+        <button type="button" class="btn" onclick="saveEditorQuestion()">שמירת שאלה</button>
+        <button type="button" class="btn btn-secondary" onclick="closeEditorModal()">ביטול</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Question Modal (Inside Game) -->
+  <div class="modal-overlay" id="modal-question">
+    <div class="modal-content">
+      <div id="daily-double-tag" class="daily-double-banner">Daily Double!</div>
+      <div id="timer" class="timer-display">10</div>
+      <div id="clue-content" class="clue-text"></div>
+      <div id="answer-content" class="answer-box"></div>
+      <div class="modal-actions">
+        <button class="btn" id="btn-reveal" onclick="revealAnswer()">חשיפת תשובה (רווח/ENTER)</button>
+        <button class="btn" id="btn-close" style="display:none;" onclick="closeModal()">סגירה והמשך (רווח/ENTER)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Rules Modal -->
+  <div class="modal-overlay" id="modal-rules-floating" onclick="closeRulesModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <h3 style="color: var(--accent-gold); font-size: 1.6rem; margin-bottom: 1rem;">תזכורת כללי מענה</h3>
+      <p style="margin-bottom: 0.5rem;">1. מענה תקני אך ורק בצורת שאלה ("מהו...", "מי היא...").</p>
+      <p style="margin-bottom: 0.5rem;">2. 10 שניות בלבד לקבוצה הבוחרת לפני פתיחה למליאה.</p>
+      <p style="margin-bottom: 1.5rem;">3. ניקוד מלא יוענק רק במקרה של ניסוח מדויק ומבוסס.</p>
+      <button class="btn" onclick="closeRulesModal()">חזרה ללוח (רווח/ENTER)</button>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'jeopardy_custom_board_v1';
+
+    const DEFAULT_CATEGORIES = [
+      "מי אמר את זה?",
+      "תירוצים",
+      "דברים מיוחדים לקבוצה שלנו",
+      "לעולם לא אשכח את זה",
+      "שיאים במספרים"
+    ];
+
+    /* Data Structure: 5 categories x 5 levels kept in memory so switching 4x4 <-> 5x5 preserves work */
+    let customBoardData = createEmptyBoardData();
+    let editingCoords = { col: 0, row: 0 };
+
+    function createEmptyBoardData() {
+      return DEFAULT_CATEGORIES.map(catName => ({
+        name: catName,
+        questions: [100, 200, 300, 400, 500].map(val => ({
+          value: val,
+          clue: "",
+          answer: "",
+          is_daily_double: false
+        }))
+      }));
+    }
+
+    function loadBoardData() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length === 5) {
+            customBoardData = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function saveBoardData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(customBoardData));
+      } catch (e) {}
+    }
+
+    function resetBoardData() {
+      if (!confirm('האם לאפס את כל שמות הנושאים והשאלות שהוזנו לברירת המחדל?')) return;
+      customBoardData = createEmptyBoardData();
+      saveBoardData();
+      renderBuilderGrid();
+    }
+
+    /* Audio Synthesizer (Web Audio API) */
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTick(isUrgent = false) {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+
+        if (isUrgent) {
+          osc.frequency.setValueAtTime(650, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(850, audioCtx.currentTime + 0.05);
+          gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+        } else {
+          osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        }
+
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      } catch(e) {}
+    }
+
+    function playBuzzer() {
+      try {
+        initAudio();
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc1.type = 'sawtooth';
+        osc2.type = 'sawtooth';
+
+        osc1.frequency.setValueAtTime(130, audioCtx.currentTime);
+        osc1.frequency.linearRampToValueAtTime(85, audioCtx.currentTime + 0.6);
+
+        osc2.frequency.setValueAtTime(136, audioCtx.currentTime);
+        osc2.frequency.linearRampToValueAtTime(91, audioCtx.currentTime + 0.6);
+
+        gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc1.start();
+        osc2.start();
+        osc1.stop(audioCtx.currentTime + 0.6);
+        osc2.stop(audioCtx.currentTime + 0.6);
+      } catch(e) {}
+    }
+
+    function playDailyDouble() {
+      try {
+        initAudio();
+        const notes = [261.63, 329.63, 392.00, 523.25];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const startTime = audioCtx.currentTime + (idx * 0.12);
+          const duration = 0.22;
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, startTime);
+
+          gain.gain.setValueAtTime(0.2, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start(startTime);
+          osc.stop(startTime + duration);
+        });
+      } catch(e) {}
+    }
+
+    function playCardOpen() {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+      } catch(e) {}
+    }
+
+    function playScoreChange(isPositive) {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        
+        if (isPositive) {
+          osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+        } else {
+          osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15);
+        }
+
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      } catch(e) {}
+    }
+
+    /* State & Navigation */
+    let teams = [];
+    let timerInterval = null;
+    let timeLeft = 10;
+
+    function showScreen(screenId) {
+      initAudio();
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      if (screenId === 'screen-lobby') {
+        populateLobby();
+      }
+    }
+
+    function populateLobby() {
+      loadBoardData();
+      renderTeamInputs();
+      renderBuilderGrid();
+    }
+
+    function handleBoardSizeChange() {
+      renderBuilderGrid();
+    }
+
+    function renderTeamInputs() {
+      const count = parseInt(document.getElementById('team-count-select').value);
+      const container = document.getElementById('team-inputs-container');
+      const existingValues = [];
+      container.querySelectorAll('input').forEach(inp => existingValues.push(inp.value));
+
+      container.innerHTML = '';
+      for (let i = 1; i <= count; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = `team-name-input-${i}`;
+        input.value = existingValues[i - 1] || `קבוצה ${i}`;
+        container.appendChild(input);
+      }
+    }
+
+    function renderBuilderGrid() {
+      const boardSize = document.getElementById('board-size-select').value;
+      const [numCols, numRows] = boardSize.split('x').map(Number);
+      const grid = document.getElementById('builder-grid');
+      grid.innerHTML = '';
+      grid.style.gridTemplateColumns = `repeat(${numCols}, minmax(130px, 1fr))`;
+
+      // Row 0: Editable Category Names
+      for (let c = 0; c < numCols; c++) {
+        const catInput = document.createElement('input');
+        catInput.type = 'text';
+        catInput.className = 'builder-cat-input';
+        catInput.value = customBoardData[c].name;
+        catInput.placeholder = `נושא ${c + 1}`;
+        catInput.oninput = (e) => {
+          customBoardData[c].name = e.target.value;
+          saveBoardData();
+        };
+        grid.appendChild(catInput);
+      }
+
+      // Rows 1..numRows: Question Slots
+      let filledCount = 0;
+      const totalSlots = numCols * numRows;
+
+      for (let r = 0; r < numRows; r++) {
+        for (let c = 0; c < numCols; c++) {
+          const q = customBoardData[c].questions[r];
+          const isFilled = q.clue.trim().length > 0 && q.answer.trim().length > 0;
+          if (isFilled) filledCount++;
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `builder-slot-btn ${isFilled ? 'filled' : ''}`;
+          btn.onclick = () => openEditorModal(c, r);
+
+          const topLabel = document.createElement('span');
+          topLabel.textContent = `${isFilled ? '✓ ' : '+ '}${q.value}${q.is_daily_double ? ' ★' : ''}`;
+          
+          const subLabel = document.createElement('span');
+          subLabel.className = 'builder-slot-sub';
+          subLabel.textContent = isFilled ? q.clue : 'לחץ להזנה';
+
+          btn.appendChild(topLabel);
+          btn.appendChild(subLabel);
+          grid.appendChild(btn);
+        }
+      }
+
+      document.getElementById('builder-progress-text').textContent =
+        `הוזנו ${filledCount} מתוך ${totalSlots} שאלות (נשמר אוטומטית בדפדפן)`;
+    }
+
+    function openEditorModal(col, row) {
+      editingCoords = { col, row };
+      const cat = customBoardData[col];
+      const q = cat.questions[row];
+
+      document.getElementById('editor-modal-title').textContent =
+        `${cat.name || 'נושא ללא שם'} — ${q.value} נקודות`;
+      document.getElementById('editor-clue-input').value = q.clue;
+      document.getElementById('editor-answer-input').value = q.answer;
+      document.getElementById('editor-dd-checkbox').checked = q.is_daily_double;
+
+      document.getElementById('modal-editor').classList.add('active');
+      setTimeout(() => document.getElementById('editor-clue-input').focus(), 50);
+    }
+
+    function closeEditorModal() {
+      document.getElementById('modal-editor').classList.remove('active');
+    }
+
+    function saveEditorQuestion() {
+      const { col, row } = editingCoords;
+      const clueVal = document.getElementById('editor-clue-input').value.trim();
+      const answerVal = document.getElementById('editor-answer-input').value.trim();
+      const isDD = document.getElementById('editor-dd-checkbox').checked;
+
+      customBoardData[col].questions[row].clue = clueVal;
+      customBoardData[col].questions[row].answer = answerVal;
+      customBoardData[col].questions[row].is_daily_double = isDD;
+
+      saveBoardData();
+      closeEditorModal();
+      renderBuilderGrid();
+    }
+
+    /* Game Initialization */
+    function startGame() {
+      initAudio();
+      const boardSize = document.getElementById('board-size-select').value;
+      const [cols, rows] = boardSize.split('x').map(Number);
+
+      // Count filled questions in active grid
+      let filledQuestions = [];
+      for (let c = 0; c < cols; c++) {
+        for (let r = 0; r < rows; r++) {
+          const q = customBoardData[c].questions[r];
+          if (q.clue.trim() && q.answer.trim()) {
+            filledQuestions.push(q);
+          }
+        }
+      }
+
+      if (filledQuestions.length === 0) {
+        alert('יש להזין לפחות שאלה ותשובה אחת בלוח לפני תחילת המשחק.');
+        return;
+      }
+
+      const totalCells = cols * rows;
+      if (filledQuestions.length < totalCells) {
+        const proceed = confirm(
+          `הוזנו ${filledQuestions.length} מתוך ${totalCells} שאלות.\nמשבצות ריקות יופיעו ככבויות בלוח המשחק. להמשיך?`
+        );
+        if (!proceed) return;
+      }
+
+      // Clone active slice for the game session
+      const activeCategories = customBoardData.slice(0, cols).map((cat, idx) => ({
+        name: cat.name.trim() || `נושא ${idx + 1}`,
+        questions: cat.questions.slice(0, rows).map(q => ({ ...q }))
+      }));
+
+      // If user didn't manually set any Daily Double among filled questions, assign 1 randomly
+      const activeFilled = [];
+      activeCategories.forEach(cat => {
+        cat.questions.forEach(q => {
+          if (q.clue.trim() && q.answer.trim()) activeFilled.push(q);
+        });
+      });
+      const hasManualDD = activeFilled.some(q => q.is_daily_double);
+      if (!hasManualDD && activeFilled.length > 0) {
+        const randomIdx = Math.floor(Math.random() * activeFilled.length);
+        activeFilled[randomIdx].is_daily_double = true;
+      }
+
+      const teamCount = parseInt(document.getElementById('team-count-select').value);
+      teams = [];
+      for (let i = 1; i <= teamCount; i++) {
+        const nameVal = document.getElementById(`team-name-input-${i}`).value.trim() || `קבוצה ${i}`;
+        teams.push({ name: nameVal, score: 0 });
+      }
+
+      buildBoard(activeCategories, cols, rows);
+      renderScoreboard();
+      showScreen('screen-game');
+    }
+
+    function buildBoard(categories, numCols, numRows) {
+      const container = document.getElementById('board-container');
+      container.innerHTML = '';
+
+      const headerRow = document.createElement('div');
+      headerRow.className = 'board-row';
+      headerRow.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;
+      categories.forEach(cat => {
+        const cell = document.createElement('div');
+        cell.className = 'board-header-cell';
+        cell.textContent = cat.name;
+        headerRow.appendChild(cell);
+      });
+      container.appendChild(headerRow);
+
+      for (let r = 0; r < numRows; r++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'board-row';
+        rowDiv.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;
+
+        categories.forEach(cat => {
+          const cardCell = document.createElement('div');
+          cardCell.className = 'card-cell';
+          const qData = cat.questions[r];
+          const isPlayable = qData.clue.trim().length > 0 && qData.answer.trim().length > 0;
+
+          if (!isPlayable) {
+            cardCell.classList.add('disabled');
+            cardCell.textContent = '—';
+          } else {
+            cardCell.textContent = qData.value;
+            cardCell.onclick = () => openQuestion(qData, cardCell);
+          }
+          rowDiv.appendChild(cardCell);
+        });
+        container.appendChild(rowDiv);
+      }
+    }
+
+    function renderScoreboard() {
+      const container = document.getElementById('scoreboard');
+      container.innerHTML = '';
+      teams.forEach((t, index) => {
+        const card = document.createElement('div');
+        card.className = 'team-card';
+        card.innerHTML = `
+          <div class="team-name" contenteditable="true" onblur="updateTeamName(${index}, this.innerText)">${t.name}</div>
+          <div class="team-score" id="score-val-${index}">${t.score}</div>
+          <div class="score-controls">
+            <button class="score-btn minus" onclick="adjustScore(${index}, -100)">-</button>
+            <button class="score-btn plus" onclick="adjustScore(${index}, 100)">+</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updateTeamName(idx, text) {
+      teams[idx].name = text.trim() || `קבוצה ${idx+1}`;
+    }
+
+    function adjustScore(teamIdx, amount) {
+      teams[teamIdx].score += amount;
+      document.getElementById(`score-val-${teamIdx}`).textContent = teams[teamIdx].score;
+      playScoreChange(amount > 0);
+    }
+
+    function openQuestion(qData, cellElement) {
+      if (cellElement.classList.contains('disabled')) return;
+      cellElement.classList.add('disabled');
+
+      const modal = document.getElementById('modal-question');
+      const ddTag = document.getElementById('daily-double-tag');
+      const clueBox = document.getElementById('clue-content');
+      const ansBox = document.getElementById('answer-content');
+      const btnReveal = document.getElementById('btn-reveal');
+      const btnClose = document.getElementById('btn-close');
+
+      if (qData.is_daily_double) {
+        ddTag.style.display = 'block';
+        playDailyDouble();
+      } else {
+        ddTag.style.display = 'none';
+        playCardOpen();
+      }
+
+      clueBox.textContent = qData.clue;
+      ansBox.textContent = qData.answer;
+      ansBox.style.display = 'none';
+
+      btnReveal.style.display = 'block';
+      btnClose.style.display = 'none';
+
+      startTimer();
+      modal.classList.add('active');
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timeLeft = 10;
+      const display = document.getElementById('timer');
+      display.textContent = timeLeft;
+      display.classList.remove('danger');
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        display.textContent = timeLeft;
+        
+        if (timeLeft <= 3 && timeLeft > 0) {
+          display.classList.add('danger');
+          playTick(true);
+        } else if (timeLeft > 0) {
+          playTick(false);
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          playBuzzer();
+        }
+      }, 1000);
+    }
+
+    function revealAnswer() {
+      clearInterval(timerInterval);
+      document.getElementById('answer-content').style.display = 'block';
+      document.getElementById('btn-reveal').style.display = 'none';
+      document.getElementById('btn-close').style.display = 'block';
+      playCardOpen();
+    }
+
+    function closeModal() {
+      clearInterval(timerInterval);
+      document.getElementById('modal-question').classList.remove('active');
+    }
+
+    function openRulesModal() {
+      document.getElementById('modal-rules-floating').classList.add('active');
+    }
+
+    function closeRulesModal() {
+      document.getElementById('modal-rules-floating').classList.remove('active');
+    }
+
+    /* Global Keyboard Navigation (Enter / Space) */
+    window.addEventListener('keydown', (e) => {
+      if (e.code !== 'Space' && e.code !== 'Enter') return;
+
+      // Guard against interfering with text inputs, textareas, selects, or team names
+      const activeEl = document.activeElement;
+      if (activeEl && (
+        activeEl.tagName === 'INPUT' ||
+        activeEl.tagName === 'TEXTAREA' ||
+        activeEl.tagName === 'SELECT' ||
+        activeEl.isContentEditable
+      )) {
+        return;
+      }
+
+      // Guard if Question Editor modal is open
+      if (document.getElementById('modal-editor').classList.contains('active')) {
+        return;
+      }
+
+      e.preventDefault();
+
+      const modalQuestion = document.getElementById('modal-question');
+      const modalRulesFloating = document.getElementById('modal-rules-floating');
+
+      if (modalQuestion.classList.contains('active')) {
+        const btnReveal = document.getElementById('btn-reveal');
+        const btnClose = document.getElementById('btn-close');
+        if (btnReveal.style.display !== 'none') {
+          revealAnswer();
+        } else if (btnClose.style.display !== 'none') {
+          closeModal();
+        }
+        return;
+      }
+
+      if (modalRulesFloating.classList.contains('active')) {
+        closeRulesModal();
+        return;
+      }
+
+      const splashScreen = document.getElementById('screen-splash');
+      const rulesScreen = document.getElementById('screen-rules');
+
+      if (splashScreen.classList.contains('active')) {
+        showScreen('screen-rules');
+      } else if (rulesScreen.classList.contains('active')) {
+        showScreen('screen-lobby');
+      }
+    });
+  </script>
+</body>
+</html>
