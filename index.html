@@ -48,28 +48,39 @@
       display: flex;
     }
 
-    /* Logo Styles */
+    /* Prominent Logo Styles */
     .app-logo-large {
-      max-height: 104px;
-      max-width: 250px;
+      max-height: 155px;
+      max-width: 360px;
       object-fit: contain;
-      margin-bottom: 1.2rem;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+      margin-bottom: 1.4rem;
+      filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.35))
+              drop-shadow(0 0 24px rgba(255, 204, 0, 0.55))
+              drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+      transition: transform 0.25s ease;
+    }
+
+    .app-logo-large:hover {
+      transform: scale(1.03);
     }
 
     .app-logo-lobby {
-      max-height: 72px;
-      max-width: 180px;
+      max-height: 115px;
+      max-width: 280px;
       object-fit: contain;
-      margin-bottom: 0.75rem;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+      margin-bottom: 0.9rem;
+      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.3))
+              drop-shadow(0 0 18px rgba(255, 204, 0, 0.5))
+              drop-shadow(0 4px 10px rgba(0, 0, 0, 0.65));
     }
 
     .app-logo-header {
-      max-height: 48px;
-      max-width: 140px;
+      max-height: 68px;
+      max-width: 190px;
       object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))
+              drop-shadow(0 0 14px rgba(255, 204, 0, 0.45))
+              drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6));
     }
 
     h1 {
@@ -331,7 +342,7 @@
     .header-center {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.2rem;
     }
     .board-container {
       width: 100%;
@@ -604,8 +615,8 @@
           <strong>חובת ניסוח כשאלה:</strong>
           התשובה חייבת להינתן אך ורק במבנה תקני של שאלה ("מהו/מהי/מי הוא...?").
           <div class="example-box">
-            (רמז: "אמר את המשפט 'אל תדאגו, אני מכיר קיצור דרך' (רגע לפני שכולנו הלכנו לאיבוד בטיול השנתי: ."<br>
-            מענה תקני: <strong>"מיהו דני?"</strong>
+            רמז: "אמר את המשפט 'אל תדאגו נגיע בזמן...' ובסוף איחרנו בחצי שעה'."<br>
+            מענה תקני: <strong>"מיהו אייל?"</strong>
           </div>
         </li>
         <li>
@@ -740,29 +751,69 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'jeopardy_custom_board_v1';
+    const STORAGE_KEY = 'jeopardy_custom_board_v2';
 
-    const DEFAULT_CATEGORIES = [
-      "מי אמר את זה?",
-      "תירוצים",
-      "דברים מיוחדים לקבוצה שלנו",
-      "לעולם לא אשכח את זה",
-      "שיאים במספרים"
+    const DEFAULT_BOARD_PRESET = [
+      {
+        name: "מי אמר את זה?",
+        questions: [
+          { value: 100, clue: "חם פה", answer: "מי אמר את זה?", is_daily_double: false },
+          { value: 200, clue: "קר כאן", answer: "מי אמר את זה?", is_daily_double: false },
+          { value: 300, clue: "אני צמא", answer: "מי אמר את זה?", is_daily_double: false },
+          { value: 400, clue: "אני רעב", answer: "מי אמר את זה?", is_daily_double: false },
+          { value: 500, clue: "", answer: "", is_daily_double: false }
+        ]
+      },
+      {
+        name: "תירוצים",
+        questions: [
+          { value: 100, clue: 'אמר/ה את המשפט "היה פקק"?', answer: "מי אמר/ה את זה?", is_daily_double: false },
+          { value: 200, clue: 'אמר/ה את המשפט "החנות נסגרה מוקדם"?', answer: "מי אמר/ה את זה?", is_daily_double: true },
+          { value: 300, clue: 'אמר/ה את המשפט "לעמותות אין כסף"', answer: "מי אמר/ה את זה?", is_daily_double: false },
+          { value: 400, clue: 'אמר/ה את המשפט "אין לי זמן"', answer: "מי אמר/ה את זה?", is_daily_double: false },
+          { value: 500, clue: "", answer: "", is_daily_double: false }
+        ]
+      },
+      {
+        name: "דברים מיוחדים לקבוצה שלנו",
+        questions: [
+          { value: 100, clue: "תמיד נגמר מהר מדי", answer: "מהו הדבר שתמיד נגמר מהר מדי?", is_daily_double: false },
+          { value: 200, clue: "חסר לכולם באופן קבוע", answer: "מהו הדבר שחסר לכולם באופן קבוע?", is_daily_double: false },
+          { value: 300, clue: "קרה לקבוצה 4 פעמים באותו מפגש", answer: "מהו האירוע שקרה 4 פעמים?", is_daily_double: false },
+          { value: 400, clue: "יצר חיבור בין חברי הקבוצה מהרגע הראשון", answer: "מהו הדבר שיצר חיבור מהרגע הראשון?", is_daily_double: false },
+          { value: 500, clue: "", answer: "", is_daily_double: false }
+        ]
+      },
+      {
+        name: "לעולם לא אשכח את זה",
+        questions: [
+          { value: 100, clue: "הסיבה הכי מקורית של שחר לצאת מוקדם", answer: "מהי הסיבה של שחר לצאת מוקדם?", is_daily_double: false },
+          { value: 200, clue: "כמות בעלי החיים שיש למוטי", answer: "כמה בעלי חיים יש למוטי?", is_daily_double: false },
+          { value: 300, clue: "התחביב המיוחד של אלון", answer: "מהו התחביב המיוחד של אלון?", is_daily_double: false },
+          { value: 400, clue: "התפקיד המיוחד של אלכס בשירות הצבאי", answer: "מהו התפקיד של אלכס בשירות הצבאי?", is_daily_double: false },
+          { value: 500, clue: "", answer: "", is_daily_double: false }
+        ]
+      },
+      {
+        name: "שיאים במספרים",
+        questions: [
+          { value: 100, clue: "", answer: "", is_daily_double: false },
+          { value: 200, clue: "", answer: "", is_daily_double: false },
+          { value: 300, clue: "", answer: "", is_daily_double: false },
+          { value: 400, clue: "", answer: "", is_daily_double: false },
+          { value: 500, clue: "", answer: "", is_daily_double: false }
+        ]
+      }
     ];
 
     /* Data Structure: 5 categories x 5 levels kept in memory so switching 4x4 <-> 5x5 preserves work */
-    let customBoardData = createEmptyBoardData();
+    let customBoardData = createDefaultBoardData();
     let editingCoords = { col: 0, row: 0 };
 
-    function createEmptyBoardData() {
-      return DEFAULT_CATEGORIES.map(catName => ({
-        name: catName,
-        questions: [100, 200, 300, 400, 500].map(val => ({
-          value: val,
-          clue: "",
-          answer: "",
-          is_daily_double: false
-        }))
+    function createDefaultBoardData() {
+      return DEFAULT_BOARD_PRESET.map(cat => ({
+        name: cat.name,
+        questions: cat.questions.map(q => ({ ...q }))
       }));
     }
 
@@ -786,7 +837,7 @@
 
     function resetBoardData() {
       if (!confirm('האם לאפס את כל שמות הנושאים והשאלות שהוזנו לברירת המחדל?')) return;
-      customBoardData = createEmptyBoardData();
+      customBoardData = createDefaultBoardData();
       saveBoardData();
       renderBuilderGrid();
     }
@@ -802,28 +853,46 @@
       }
     }
 
-    function playTick(isUrgent = false) {
+    function playCountdownTick(secondLeft) {
       try {
         initAudio();
-        const osc = audioCtx.createOscillator();
+        const now = audioCtx.currentTime;
+        const isUrgent = secondLeft <= 3;
+
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = 'sine';
+
+        osc1.type = 'triangle';
+        osc2.type = 'sine';
 
         if (isUrgent) {
-          osc.frequency.setValueAtTime(650, audioCtx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(850, audioCtx.currentTime + 0.05);
-          gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+          const baseFreq = secondLeft === 1 ? 980 : (secondLeft === 2 ? 880 : 780);
+          osc1.frequency.setValueAtTime(baseFreq, now);
+          osc1.frequency.exponentialRampToValueAtTime(baseFreq * 1.15, now + 0.08);
+          osc2.frequency.setValueAtTime(baseFreq * 1.5, now);
+
+          gain.gain.setValueAtTime(0.24, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
         } else {
-          osc.frequency.setValueAtTime(450, audioCtx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.04);
-          gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+          const baseFreq = 520 + ((10 - secondLeft) * 18);
+          osc1.frequency.setValueAtTime(baseFreq, now);
+          osc1.frequency.exponentialRampToValueAtTime(baseFreq * 0.85, now + 0.07);
+          osc2.frequency.setValueAtTime(baseFreq * 2, now);
+
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
         }
 
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-        osc.connect(gain);
+        osc1.connect(gain);
+        osc2.connect(gain);
         gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.05);
+
+        const duration = isUrgent ? 0.12 : 0.09;
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + duration);
+        osc2.stop(now + duration);
       } catch(e) {}
     }
 
@@ -838,13 +907,13 @@
         osc2.type = 'sawtooth';
 
         osc1.frequency.setValueAtTime(130, audioCtx.currentTime);
-        osc1.frequency.linearRampToValueAtTime(85, audioCtx.currentTime + 0.6);
+        osc1.frequency.linearRampToValueAtTime(85, audioCtx.currentTime + 0.65);
 
         osc2.frequency.setValueAtTime(136, audioCtx.currentTime);
-        osc2.frequency.linearRampToValueAtTime(91, audioCtx.currentTime + 0.6);
+        osc2.frequency.linearRampToValueAtTime(91, audioCtx.currentTime + 0.65);
 
-        gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+        gain.gain.setValueAtTime(0.28, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.65);
 
         osc1.connect(gain);
         osc2.connect(gain);
@@ -852,8 +921,8 @@
 
         osc1.start();
         osc2.start();
-        osc1.stop(audioCtx.currentTime + 0.6);
-        osc2.stop(audioCtx.currentTime + 0.6);
+        osc1.stop(audioCtx.currentTime + 0.65);
+        osc2.stop(audioCtx.currentTime + 0.65);
       } catch(e) {}
     }
 
@@ -1205,26 +1274,34 @@
       btnReveal.style.display = 'block';
       btnClose.style.display = 'none';
 
-      startTimer();
+      startTimer(qData.is_daily_double);
       modal.classList.add('active');
     }
 
-    function startTimer() {
+    function startTimer(isDailyDouble = false) {
       clearInterval(timerInterval);
       timeLeft = 10;
       const display = document.getElementById('timer');
       display.textContent = timeLeft;
       display.classList.remove('danger');
 
+      if (isDailyDouble) {
+        setTimeout(() => {
+          if (timeLeft === 10) playCountdownTick(10);
+        }, 550);
+      } else {
+        playCountdownTick(10);
+      }
+
       timerInterval = setInterval(() => {
         timeLeft--;
         display.textContent = timeLeft;
         
-        if (timeLeft <= 3 && timeLeft > 0) {
-          display.classList.add('danger');
-          playTick(true);
-        } else if (timeLeft > 0) {
-          playTick(false);
+        if (timeLeft > 0) {
+          if (timeLeft <= 3) {
+            display.classList.add('danger');
+          }
+          playCountdownTick(timeLeft);
         }
 
         if (timeLeft <= 0) {
@@ -1259,7 +1336,6 @@
     window.addEventListener('keydown', (e) => {
       if (e.code !== 'Space' && e.code !== 'Enter') return;
 
-      // Guard against interfering with text inputs, textareas, selects, or team names
       const activeEl = document.activeElement;
       if (activeEl && (
         activeEl.tagName === 'INPUT' ||
@@ -1270,7 +1346,6 @@
         return;
       }
 
-      // Guard if Question Editor modal is open
       if (document.getElementById('modal-editor').classList.contains('active')) {
         return;
       }
